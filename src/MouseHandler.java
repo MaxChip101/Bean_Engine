@@ -52,4 +52,11 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
         Main.mouseX = pos.x;
         Main.mouseY = pos.y;
     }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Point pos = e.getPoint();
+        Main.mouseX = pos.x;
+        Main.mouseY = pos.y;
+    }
 }

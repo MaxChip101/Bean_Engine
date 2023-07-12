@@ -15,7 +15,6 @@ public class Drawer extends JPanel implements ActionListener {
     }
 
     int camX = 0;
-
     int camY = 0;
 
     public int[][][] objects = new int[256][4][3];
@@ -41,6 +40,17 @@ public class Drawer extends JPanel implements ActionListener {
         objects[objid][3][0] = shape;
     }
 
+    public void DeleteObj(int objid) {
+        objects[objid][0][0] = 0;
+        objects[objid][0][1] = 0;
+        objects[objid][1][0] = 0;
+        objects[objid][1][1] = 0;
+        objects[objid][2][0] = 0;
+        objects[objid][2][1] = 0;
+        objects[objid][2][2] = 0;
+        objects[objid][3][0] = 0;
+    }
+
     public void ChangeDecal(int objid, String imgDir) {
         BufferedImage image;
         try {
@@ -64,6 +74,17 @@ public class Drawer extends JPanel implements ActionListener {
         UIObjects[UIObjID][2][1] = green;
         UIObjects[UIObjID][2][2] = blue;
         UIObjects[UIObjID][3][0] = shape;
+    }
+
+    public void DeleteUIObj(int UIObjID) {
+        UIObjects[UIObjID][0][0] = 0;
+        UIObjects[UIObjID][0][1] = 0;
+        UIObjects[UIObjID][1][0] = 0;
+        UIObjects[UIObjID][1][1] = 0;
+        UIObjects[UIObjID][2][0] = 0;
+        UIObjects[UIObjID][2][1] = 0;
+        UIObjects[UIObjID][2][2] = 0;
+        UIObjects[UIObjID][3][0] = 0;
     }
 
     public void ChangeUIDecal(int UIObjID, String imgDir) {

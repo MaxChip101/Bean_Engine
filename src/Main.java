@@ -18,6 +18,7 @@ public class Main {
     // Screen variables
     public static int ScreenWidth;
     public static int ScreenHeight;
+    public static Boolean FrameResizable;
 
     // Frame rate
     public static final int FRAME_RATE = 120;
@@ -43,19 +44,22 @@ public class Main {
         frame.addKeyListener(key);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
-        frame.setSize(ScreenWidth, ScreenHeight);
         Image icon = Toolkit.getDefaultToolkit().getImage("res/img/icon.jpg");
         frame.setIconImage(icon);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setVisible(true);
         start();
         draw.Begin();
+        frame.setSize(ScreenWidth, ScreenHeight);
+        frame.setResizable(FrameResizable);
+        frame.setVisible(true);
     }
 
 
     public static void start(){
         frame.setTitle("Engine");
+        ScreenWidth = 1000;
+        ScreenHeight = 1000;
+        FrameResizable = true;
         draw.ChangeDecal(0, "res/img/icon.jpg");
         draw.ChangeUIString(1, "This is UI");
         draw.CreateObj(0, 475, 475, 100, 100, 1, 255, 0, 0);

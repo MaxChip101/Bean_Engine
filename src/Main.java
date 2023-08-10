@@ -46,11 +46,11 @@ public class Main {
         frame.addMouseMotionListener(mouse);
         Image icon = Toolkit.getDefaultToolkit().getImage("res/img/icon.jpg");
         frame.setIconImage(icon);
-        frame.setLocationRelativeTo(null);
         start();
         draw.Begin();
         frame.setSize(ScreenWidth, ScreenHeight);
         frame.setResizable(FrameResizable);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

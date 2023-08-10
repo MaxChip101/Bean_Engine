@@ -15,6 +15,10 @@ public class Main {
     public static int keyreleased = -1;
     public static String keytyped = "none";
 
+    // Screen variables
+    public static int ScreenWidth;
+    public static int ScreenHeight;
+
     // Frame rate
     public static final int FRAME_RATE = 120;
 
@@ -39,7 +43,7 @@ public class Main {
         frame.addKeyListener(key);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
-        frame.setSize(1000, 1000);
+        frame.setSize(ScreenWidth, ScreenHeight);
         Image icon = Toolkit.getDefaultToolkit().getImage("res/img/icon.jpg");
         frame.setIconImage(icon);
         frame.setLocationRelativeTo(null);

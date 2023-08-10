@@ -4,6 +4,7 @@ import java.awt.*;
 public class Main {
 
     // Instancing the dependencies
+    static JFrame frame = new JFrame();
     static Drawer draw = new Drawer();
     static KeyHandler key = new KeyHandler();
     static AudioHandler audio = new AudioHandler();
@@ -33,7 +34,6 @@ public class Main {
 
     // Main function
     public static void main(String[] args){
-        JFrame frame = new JFrame("engine");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(draw);
         frame.addKeyListener(key);
@@ -51,7 +51,7 @@ public class Main {
 
 
     public static void start(){
-
+        frame.setTitle("Engine");
         draw.ChangeDecal(0, "res/img/icon.jpg");
         draw.ChangeUIString(1, "This is UI");
         draw.CreateObj(0, 475, 475, 100, 100, 1, 255, 0, 0);
@@ -75,16 +75,16 @@ public class Main {
     public static void update() {
 
         if (key.keys.get(65)) {
-            draw.objects[0][0][0] -= 10;
+            draw.objects[0][0] -= 10;
         }
         if (key.keys.get(68)) {
-            draw.objects[0][0][0] += 10;
+            draw.objects[0][0] += 10;
         }
         if (key.keys.get(87)) {
-            draw.objects[0][0][1] -= 10;
+            draw.objects[0][1] -= 10;
         }
         if (key.keys.get(83)) {
-            draw.objects[0][0][1] += 10;
+            draw.objects[0][1] += 10;
         }
 
         if (key.keys.get(37)) {
@@ -99,7 +99,7 @@ public class Main {
         if (key.keys.get(40)) {
             draw.camY += 10;
         }
-        draw.UIObjects[2][0][1] = mouseY - 75;
+        draw.UIObjects[2][1] = mouseY - 75;
 
     }
 }

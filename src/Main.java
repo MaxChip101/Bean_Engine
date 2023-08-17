@@ -76,7 +76,7 @@ public class Main {
         key.registerKey(38);
         key.registerKey(39);
         key.registerKey(40);
-        audio.registerSound(0, "res/audio/Mario64underwater.wav");
+        audio.AddSound(0, "res/audio/Mario64underwater.wav");
         audio.playSound(0);
     }
 

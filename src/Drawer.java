@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class Drawer extends JPanel implements ActionListener {
 
@@ -17,130 +18,150 @@ public class Drawer extends JPanel implements ActionListener {
     int camX = 0;
     int camY = 0;
 
-    public int[][] objects = new int[4096][8];
+    public ArrayList<int[]> objects = new ArrayList<>();
 
-    public BufferedImage[] decals = new BufferedImage[4096];
+    public ArrayList<BufferedImage> decals = new ArrayList<>();
 
-    public String[] strings = new String[4096];
+    public ArrayList<String> strings = new ArrayList<>();
 
-    public int[][] UIObjects = new int[4096][8];
+    public ArrayList<int[]> UIObjects = new ArrayList<>();
 
-    public BufferedImage[] UIDecals = new BufferedImage[4096];
+    public ArrayList<BufferedImage> UIDecals = new ArrayList<>();
 
-    public String[] UIStrings = new String[4096];
+    public ArrayList<String> UIStrings = new ArrayList<>();
 
-    public void CreateObj(int objid, int X, int Y, int width_X2, int height_Y2, int shape, int red, int green, int blue) {
-        objects[objid][0] = X;
-        objects[objid][1] = Y;
-        objects[objid][2] = width_X2;
-        objects[objid][3] = height_Y2;
-        objects[objid][4] = red;
-        objects[objid][5] = green;
-        objects[objid][6] = blue;
-        objects[objid][7] = shape;
+    public void CreateObj(int objid, int X, int Y, int width_X2, int height_Y2, int shape, int line_thickness, int red, int green, int blue) {
+
+        int[] tempArray = new int[9];
+        tempArray[0] = X;
+        tempArray[1] = Y;
+        tempArray[2] = width_X2;
+        tempArray[3] = height_Y2;
+        tempArray[4] = red;
+        tempArray[5] = green;
+        tempArray[6] = blue;
+        tempArray[7] = shape;
+        tempArray[8] = line_thickness;
+
+        objects.add(objid, tempArray);
     }
 
     public void DeleteObj(int objid) {
-        objects[objid][0] = 0;
-        objects[objid][1] = 0;
-        objects[objid][2] = 0;
-        objects[objid][3] = 0;
-        objects[objid][4] = 0;
-        objects[objid][5] = 0;
-        objects[objid][6] = 0;
-        objects[objid][7] = 0;
+        objects.remove(objid);
     }
 
-    public void ChangeDecal(int objid, String imgDir) {
+    public void AddDecal(int objid, String imgDir) {
         BufferedImage image;
         try {
             image = ImageIO.read(new File(imgDir));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        decals[objid] = image;
+        decals.add(objid, image);
     }
 
-    public void ChangeStringObj(int objid, String string) {
-        strings[objid] = string;
+    public void DeleteDecal(int objid) {
+        decals.remove(objid);
     }
 
-    public void CreateUIObj(int UIObjID, int X, int Y, int width_X2, int height_Y2, int shape, int red, int green, int blue) {
-        UIObjects[UIObjID][0] = X;
-        UIObjects[UIObjID][1] = Y;
-        UIObjects[UIObjID][2] = width_X2;
-        UIObjects[UIObjID][3] = height_Y2;
-        UIObjects[UIObjID][4] = red;
-        UIObjects[UIObjID][5] = green;
-        UIObjects[UIObjID][6] = blue;
-        UIObjects[UIObjID][7] = shape;
+    public void AddString(int objid, String string) {
+        strings.add(objid, string);
+    }
+
+    public void DeleteString(int objid) {
+        strings.remove(objid);
+    }
+
+    public void CreateUIObj(int UIObjId, int X, int Y, int width_X2, int height_Y2, int shape, int line_thickness, int red, int green, int blue) {
+        int[] tempArray = new int[9];
+        tempArray[0] = X;
+        tempArray[1] = Y;
+        tempArray[2] = width_X2;
+        tempArray[3] = height_Y2;
+        tempArray[4] = red;
+        tempArray[5] = green;
+        tempArray[6] = blue;
+        tempArray[7] = shape;
+        tempArray[8] = line_thickness;
+
+        UIObjects.add(UIObjId, tempArray);
+
     }
 
     public void DeleteUIObj(int UIObjID) {
-        UIObjects[UIObjID][0] = 0;
-        UIObjects[UIObjID][1] = 0;
-        UIObjects[UIObjID][2] = 0;
-        UIObjects[UIObjID][3] = 0;
-        UIObjects[UIObjID][4] = 0;
-        UIObjects[UIObjID][5] = 0;
-        UIObjects[UIObjID][6] = 0;
-        UIObjects[UIObjID][7] = 0;
+        UIObjects.remove(UIObjID);
     }
 
-    public void ChangeUIDecal(int UIObjID, String imgDir) {
+    public void AddUIDecal(int UIObjID, String imgDir) {
         BufferedImage image;
         try {
             image = ImageIO.read(new File(imgDir));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        UIDecals[UIObjID] = image;
+        UIDecals.add(UIObjID, image);
     }
 
-    public void ChangeUIString(int UIObjID, String string) {
-        UIStrings[UIObjID] = string;
+    public void DeleteUIDecal(int UIObjId) {
+        UIDecals.remove(UIObjId);
+    }
+
+    public void AddUIString(int UIObjID, String string) {
+        UIStrings.add(UIObjID, string);
+    }
+
+    public void DeleteUIString(int UIObjId) {
+        UIStrings.remove(UIObjId);
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        for (int i = 0; i < objects.length; i++) {
-            g2.setColor(new Color(objects[i][4], objects[i][5], objects[i][6]));
-            switch (objects[i][7]) {
+        for (int i = 0; i < objects.size(); i++) {
+            // sets the color of the object to the color to draw
+            g2.setColor(new Color(objects.get(i)[4], objects.get(i)[5], objects.get(i)[6]));
+            // sets the thickness of the line
+            Stroke LineStroke = new BasicStroke(objects.get(i)[8]);
+            g2.setStroke(LineStroke);
+            switch (objects.get(i)[7]) {
                 case 0 ->
-                        g2.drawOval(objects[i][0] - camX, objects[i][1] - camY, objects[i][2], objects[i][3]);
+                        g2.drawOval(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
                 case 1 ->
-                        g2.drawImage(decals[i], objects[i][0] - camX, objects[i][1] - camY, objects[i][2], objects[i][3], null);
+                        g2.drawImage(decals.get(i), objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3], null);
                 case 2 ->
-                        g2.drawLine(objects[i][0] - camX, objects[i][1] - camY, objects[i][2], objects[i][3]);
+                        g2.drawLine(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
                 case 3 ->
-                        g2.drawString(strings[i], objects[i][0] - camX, objects[i][1] - camY);
+                        g2.drawString(strings.get(i), objects.get(i)[0] - camX, objects.get(i)[1] - camY);
                 case 4 ->
-                        g2.drawRect(objects[i][0] - camX, objects[i][1] - camY, objects[i][2], objects[i][3]);
+                        g2.drawRect(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
                 case 5 ->
-                        g2.fillOval(objects[i][0] - camX, objects[i][1] - camY, objects[i][2], objects[i][3]);
+                        g2.fillOval(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
                 case 6 ->
-                        g2.fillRect(objects[i][0] - camX, objects[i][1] - camY, objects[i][2], objects[i][3]);
+                        g2.fillRect(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
             }
         }
 
-        for (int i = 0; i < UIObjects.length; i++) {
-            g2.setColor(new Color(UIObjects[i][4], UIObjects[i][5], UIObjects[i][6]));
-            switch (UIObjects[i][7]) {
+        for (int i = 0; i < UIObjects.size(); i++) {
+            // sets the color of the object to the color to draw
+            g2.setColor(new Color(UIObjects.get(i)[4], UIObjects.get(i)[5], UIObjects.get(i)[6]));
+            // sets the thickness of the line
+            Stroke LineStroke = new BasicStroke(UIObjects.get(i)[8]);
+            g2.setStroke(LineStroke);
+            switch (UIObjects.get(i)[7]) {
                 case 0 ->
-                        g2.drawOval(UIObjects[i][0], UIObjects[i][1], UIObjects[i][2], UIObjects[i][3]);
+                        g2.drawOval(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
                 case 1 ->
-                        g2.drawImage(UIDecals[i], UIObjects[i][0], UIObjects[i][1], UIObjects[i][2], UIObjects[i][3], null);
+                        g2.drawImage(UIDecals.get(i), UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3], null);
                 case 2 ->
-                        g2.drawLine(UIObjects[i][0], UIObjects[i][1], UIObjects[i][2], UIObjects[i][3]);
+                        g2.drawLine(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
                 case 3 ->
-                        g2.drawString(UIStrings[i], UIObjects[i][0], UIObjects[i][1]);
+                        g2.drawString(UIStrings.get(i), UIObjects.get(i)[0], UIObjects.get(i)[1]);
                 case 4 ->
-                        g2.drawRect(UIObjects[i][0], UIObjects[i][1], UIObjects[i][2], UIObjects[i][3]);
+                        g2.drawRect(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
                 case 5 ->
-                        g2.fillOval(UIObjects[i][0], UIObjects[i][1], UIObjects[i][2], UIObjects[i][3]);
+                        g2.fillOval(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
                 case 6 ->
-                        g2.fillRect(UIObjects[i][0], UIObjects[i][1], UIObjects[i][2], UIObjects[i][3]);
+                        g2.fillRect(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
             }
         }
     }

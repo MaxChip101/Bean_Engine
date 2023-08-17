@@ -1,30 +1,35 @@
 import java.io.*;
-
 import javax.sound.sampled.*;
+import java.util.ArrayList;
 
 public class AudioHandler {
 
-    AudioInputStream[] stream = new AudioInputStream[256];
+    ArrayList<AudioInputStream> stream = new ArrayList<>();
     AudioFormat format;
     DataLine.Info info;
-    Clip[] clip = new Clip[256];
+    ArrayList<Clip> clip = new ArrayList<>();
 
-    public void registerSound(int SoundId, String path) {
+    public void AddSound(int SoundId, String path) {
         try {
-            stream[SoundId] = AudioSystem.getAudioInputStream(new File(path));
-            format = stream[SoundId].getFormat();
+            stream.add(SoundId, AudioSystem.getAudioInputStream(new File(path)));
+            format = stream.get(SoundId).getFormat();
             info = new DataLine.Info(Clip.class, format);
-            clip[SoundId] = (Clip) AudioSystem.getLine(info);
+            clip.add(SoundId, (Clip) AudioSystem.getLine(info));
         }
         catch (Exception e) {
                 e.printStackTrace();
             }
     }
 
+    public void RemoveSound(int SoundId) {
+        stream.remove(SoundId);
+        clip.remove(SoundId);
+    }
+
     public void playSound(int SoundId) {
         try {
-            clip[SoundId].open(stream[SoundId]);
-            clip[SoundId].start();
+            clip.get(SoundId).open(stream.get(SoundId));
+            clip.get(SoundId).start();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -33,8 +38,8 @@ public class AudioHandler {
 
     public void stopSound(int SoundId) {
         try {
-            clip[SoundId].stop();
-            clip[SoundId].close();
+            clip.get(SoundId).stop();
+            clip.get(SoundId).close();
         }
         catch (Exception e) {
             e.printStackTrace();

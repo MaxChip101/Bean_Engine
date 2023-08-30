@@ -1,7 +1,5 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 public class MouseHandler extends MouseAdapter implements MouseMotionListener {
 
@@ -59,4 +57,22 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
         Main.mouseX = pos.x;
         Main.mouseY = pos.y;
     }
+
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        Main.scrollWheelRotation = e.getWheelRotation();
+    }
+
+    // Callable Functions
+
+    public void MoveCursor(Point point) {
+        try {
+            Robot robot = new Robot();
+            int xcoor = point.x;
+            int ycoor = point.y;
+            robot.mouseMove(xcoor, ycoor); // Set the mouse cursor position
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

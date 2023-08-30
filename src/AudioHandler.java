@@ -1,75 +1,77 @@
-import java.io.*;
 import javax.sound.sampled.*;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AudioHandler {
 
-    ArrayList<AudioInputStream> stream = new ArrayList<>();
-    AudioFormat format;
-    DataLine.Info info;
-    ArrayList<Clip> clip = new ArrayList<>();
-    ArrayList<Long> clipPositions = new ArrayList<>();
+    private Map<Integer, Clip> soundClips;
+    private AudioFormat audioFormat;
 
-    public void AddSound(int SoundId, String path) {
-        try {
-            stream.add(SoundId, AudioSystem.getAudioInputStream(new File(path)));
-            format = stream.get(SoundId).getFormat();
-            info = new DataLine.Info(Clip.class, format);
-            clip.add(SoundId, (Clip) AudioSystem.getLine(info));
-            clipPositions.set(SoundId, 0L);
-        }
-        catch (Exception e) {
-                e.printStackTrace();
-            }
+    public AudioHandler() {
+        soundClips = new HashMap<>();
     }
 
-    public void RemoveSound(int SoundId) {
-        stream.remove(SoundId);
-        clip.remove(SoundId);
-
-    }
-
-    public void playSound(int SoundId) {
+    public int AddSound(String path) {
         try {
-            clip.get(SoundId).open(stream.get(SoundId));
-            clip.get(SoundId).start();
-        }
-        catch (Exception e) {
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(path));
+            audioFormat = inputStream.getFormat();
+            DataLine.Info clipInfo = new DataLine.Info(Clip.class, audioFormat);
+            Clip newClip = (Clip) AudioSystem.getLine(clipInfo);
+            newClip.open(inputStream);
+
+            int soundId = soundClips.size();
+            soundClips.put(soundId, newClip);
+
+            return soundId;
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to add sound: " + e.getMessage());
         }
     }
 
-    public void stopSound(int SoundId) {
-        try {
-            clip.get(SoundId).stop();
-            clip.get(SoundId).close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+    public void removeSound(int soundId) {
+        Clip clipToRemove = soundClips.get(soundId);
+        if (clipToRemove != null) {
+            clipToRemove.close();
+            soundClips.remove(soundId);
         }
     }
 
-    public void pauseSound(int SoundId) {
-        try {
-            clipPositions.set(SoundId, clip.get(SoundId).getMicrosecondPosition());
-            clip.get(SoundId).stop();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void playSound(int soundId) {
+        Clip clipToPlay = soundClips.get(soundId);
+        if (clipToPlay != null && !clipToPlay.isActive()) {
+            clipToPlay.setMicrosecondPosition(0);
+            clipToPlay.start();
         }
     }
 
-    public void unpauseSound(int SoundId) {
-        try {
-            clip.get(SoundId).setMicrosecondPosition(clipPositions.get(SoundId));
-            clip.get(SoundId).start();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void stopSound(int soundId) {
+        Clip clipToStop = soundClips.get(soundId);
+        if (clipToStop != null && clipToStop.isActive()) {
+            clipToStop.stop();
+            clipToStop.setMicrosecondPosition(0);
+        }
+    }
+
+    public void pauseSound(int soundId) {
+        Clip clipToPause = soundClips.get(soundId);
+        if (clipToPause != null && clipToPause.isActive()) {
+            clipToPause.stop();
+        }
+    }
+
+    public void unpauseSound(int soundId) {
+        Clip clipToUnpause = soundClips.get(soundId);
+        if (clipToUnpause != null && !clipToUnpause.isActive()) {
+            clipToUnpause.start();
         }
     }
 
     public void seekToTimestamp(int SoundId, long timestampMicroseconds) {
         try {
-            clip.get(SoundId).setMicrosecondPosition(timestampMicroseconds);
+            soundClips.get(SoundId).setMicrosecondPosition(timestampMicroseconds);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,7 +79,7 @@ public class AudioHandler {
 
     public void setVolume(int SoundId, float volume) {
         try {
-            FloatControl gainControl = (FloatControl) clip.get(SoundId).getControl(FloatControl.Type.MASTER_GAIN);
+            FloatControl gainControl = (FloatControl) soundClips.get(SoundId).getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(20f * (float) Math.log10(volume));
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,7 +88,7 @@ public class AudioHandler {
 
     public void setPan(int SoundId, float pan) {
         try {
-            FloatControl panControl = (FloatControl) clip.get(SoundId).getControl(FloatControl.Type.PAN);
+            FloatControl panControl = (FloatControl) soundClips.get(SoundId).getControl(FloatControl.Type.PAN);
             panControl.setValue(pan);
         } catch (Exception e) {
             e.printStackTrace();

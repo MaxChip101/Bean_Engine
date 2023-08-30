@@ -73,6 +73,8 @@ public class Main {
         key.registerKey(KeyEvent.VK_DOWN);
         key.registerKey(KeyEvent.VK_LEFT);
         key.registerKey(KeyEvent.VK_RIGHT);
+        audio.AddSound("res/audio/Mario64underwater.wav");
+        audio.playSound(0);
     }
 
     static int rotation = 0;
@@ -93,9 +95,11 @@ public class Main {
         }
         if (key.keys.get(KeyEvent.VK_LEFT)) {
             graphics.camX -= 5;
+            audio.unpauseSound(0);
         }
         if (key.keys.get(KeyEvent.VK_RIGHT)) {
             graphics.camX += 5;
+            audio.pauseSound(0);
         }
 
     }

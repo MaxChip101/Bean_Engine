@@ -3,6 +3,16 @@ import java.awt.event.*;
 
 public class MouseHandler extends MouseAdapter implements MouseMotionListener {
 
+    Robot robot;
+
+    {
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Not used
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -65,14 +75,56 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
     // Callable Functions
 
     public void MoveCursor(Point point) {
-        try {
-            Robot robot = new Robot();
             int xcoor = point.x;
             int ycoor = point.y;
             robot.mouseMove(xcoor, ycoor); // Set the mouse cursor position
-        } catch (AWTException e) {
-            e.printStackTrace();
+    }
+
+    public void ClickMouse(int mouseButton) {
+        switch (mouseButton) {
+            case 0 :
+                robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                break;
+            case 1 :
+                robot.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+                robot.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
+                break;
+            case 2 :
+                robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+                robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+                break;
+        }
+
+    }
+
+    public void HoldMouse(int mouseButton) {
+        switch (mouseButton) {
+            case 0 :
+                robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                break;
+            case 1 :
+                robot.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+                break;
+            case 2 :
+                robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+                break;
         }
     }
+
+    public void ReleaseMouse(int mouseButton) {
+        switch (mouseButton) {
+            case 0 :
+                robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                break;
+            case 1 :
+                robot.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
+                break;
+            case 2 :
+                robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+                break;
+        }
+    }
+
 
 }

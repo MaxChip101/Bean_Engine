@@ -246,10 +246,6 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // makes the graphics the same size as the frame
-        double scaleX = (double) getWidth() / Main.screenWidth;
-        double scaleY = (double) getHeight() / Main.screenHeight;
-
         // draws object graphics
         for (int i = 0; i < objects.size(); i++) {
             // sets the color of the object to the color to draw

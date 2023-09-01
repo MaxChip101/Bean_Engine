@@ -245,6 +245,12 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
+        // makes the graphics the same size as the frame
+        double scaleX = (double) getWidth() / Main.screenWidth;
+        double scaleY = (double) getHeight() / Main.screenHeight;
+
+        // draws object graphics
         for (int i = 0; i < objects.size(); i++) {
             // sets the color of the object to the color to draw
             g2.setColor(new Color(objects.get(i)[4], objects.get(i)[5], objects.get(i)[6], objects.get(i)[7]));
@@ -252,13 +258,16 @@ public class GraphicsHandler extends JPanel implements ActionListener {
             Stroke LineStroke = new BasicStroke(objects.get(i)[8]);
             g2.setStroke(LineStroke);
 
-            // sets rotation
-            AffineTransform transform = new AffineTransform();
-            double objrotation = Math.toRadians(objects.get(i)[9]);
-            transform.rotate(objrotation, objects.get(i)[0] - camX, objects.get(i)[1] - camY);
-            transform.translate(-objects.get(i)[10] , -objects.get(i)[11]);
-            g2.setTransform(transform);
+            // scales to fit frame
+            AffineTransform tx = new AffineTransform();
+            tx.concatenate( g2.getTransform() );
 
+            // sets rotation
+            double objrotation = Math.toRadians(objects.get(i)[9]);
+            tx.rotate(objrotation, objects.get(i)[0] - camX, objects.get(i)[1] - camY);
+            tx.translate(-objects.get(i)[10] , -objects.get(i)[11]);
+
+            g2.setTransform(tx);
 
             switch (objects.get(i)[12]) {
                 case 0 ->
@@ -266,7 +275,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
                 case 1 ->
                         g2.drawImage(decals.get(i), objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3], null);
                 case 2 ->
-                        g2.drawLine(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
+                        g2.drawLine(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2] - camX, objects.get(i)[3] - camY);
                 case 3 ->
                         g2.drawString(strings.get(i), objects.get(i)[0] - camX, objects.get(i)[1] - camY);
                 case 4 ->
@@ -280,6 +289,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
         }
 
+        // draws UI components
         for (int i = 0; i < UIObjects.size(); i++) {
             // sets the color of the object to the color to draw
             g2.setColor(new Color(UIObjects.get(i)[4], UIObjects.get(i)[5], UIObjects.get(i)[6], UIObjects.get(i)[7]));

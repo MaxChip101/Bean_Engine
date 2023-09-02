@@ -67,8 +67,8 @@ public class Main {
         ScreenWidth = 1600;
         ScreenHeight = 1000;
         FrameResizable = false;
-        obj1 = graphics.CreateObj(rectangle1, "fillrect", 0, 25, 25, 0, new Color(0, 0, 0, 255));
-        int obj2 = graphics.CreateObj(new Rectangle(600, 500, 50, 50), "fillrect", 0, 25, 25, 0, new Color(255, 0, 0, 255));
+        obj1 = graphics.CreateObj(rectangle1, "fillrect", 0, 0, 25, 25, 0, new Color(0, 0, 0, 255));
+        int obj2 = graphics.CreateObj(new Rectangle(600, 500, 50, 50), "fillrect", 0, 0, 25, 25, 0, new Color(255, 0, 0, 255));
         key.registerKey(KeyEvent.VK_UP);
         key.registerKey(KeyEvent.VK_DOWN);
         key.registerKey(KeyEvent.VK_LEFT);
@@ -82,7 +82,7 @@ public class Main {
     // BUILT-IN: updates every frame
     public static void update() {
         rotation += 1;
-        graphics.EditObj(obj1, rectangle1, "fillrect", rotation, 25, 25, 0, new Color(0, 0, 0, 255));
+        graphics.EditObj(obj1, rectangle1, "fillrect", 0, rotation, 25, 25, 0, new Color(0, 0, 0, 255));
 
         Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         frame.setCursor(cursor);

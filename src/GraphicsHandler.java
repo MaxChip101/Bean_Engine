@@ -25,15 +25,13 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
     public ArrayList<String> strings = new ArrayList<>();
 
+    public ArrayList<Font> fonts = new ArrayList<>();
+
     public ArrayList<int[]> UIObjects = new ArrayList<>();
 
-    public ArrayList<BufferedImage> UIDecals = new ArrayList<>();
+    public int CreateObj(Rectangle rect, String shape, int resourceID, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
 
-    public ArrayList<String> UIStrings = new ArrayList<>();
-
-    public int CreateObj(Rectangle rect, String shape, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
-
-        int[] tempArray = new int[13];
+        int[] tempArray = new int[14];
         tempArray[0] = rect.x;
         tempArray[1] = rect.y;
         tempArray[2] = rect.width;
@@ -46,6 +44,8 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         tempArray[9] = rotaion;
         tempArray[10] = rotationOffsetX;
         tempArray[11] = rotationOffsetY;
+
+        tempArray[13] = resourceID;
 
         switch (shape) {
             case "circle" -> tempArray[12] = 0;
@@ -61,9 +61,9 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         return objects.indexOf(tempArray);
     }
 
-    public void EditObj(int objid, Rectangle rect, String shape, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
+    public void EditObj(int objid, Rectangle rect, String shape, int resourceID, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
 
-        int[] tempArray = new int[13];
+        int[] tempArray = new int[14];
         tempArray[0] = rect.x;
         tempArray[1] = rect.y;
         tempArray[2] = rect.width;
@@ -76,6 +76,8 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         tempArray[9] = rotaion;
         tempArray[10] = rotationOffsetX;
         tempArray[11] = rotationOffsetY;
+
+        tempArray[13] = resourceID;
 
         switch (shape) {
             case "circle" -> tempArray[12] = 0;
@@ -109,36 +111,42 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         return decals.indexOf(image);
     }
 
-    public void EditDecal(int objid, String imgDir) {
+    public void EditDecal(int recourseID, String imgDir) {
         BufferedImage image;
         try {
             image = ImageIO.read(new File(imgDir));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        decals.set(objid, image);
+        decals.set(recourseID, image);
     }
 
-    public void DeleteDecal(int objid) {
-        decals.remove(objid);
+    public void DeleteDecal(int recourseID) {
+        decals.remove(recourseID);
     }
 
-    public int AddString(String string) {
+    public int AddString(String string, String font, int style, int size) {
         strings.add(string);
+        Font newfont = new Font(font, style, size);
+        fonts.add(newfont);
         return strings.indexOf(string);
     }
 
-    public void EditString(int objid, String string) {
-        UIStrings.set(objid, string);
+    public void EditString(int recourseID, String string, String font, int style, int size) {
+        strings.set(recourseID, string);
+        Font newfont = new Font(font, style, size);
+        fonts.add(newfont);
     }
 
-    public void DeleteString(int objid) {
-        strings.remove(objid);
+    public void DeleteString(int recourseID) {
+        strings.remove(recourseID);
+        fonts.remove(recourseID);
     }
 
-    public int CreateUIObj(Rectangle rect, String shape, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
 
-        int[] tempArray = new int[13];
+    public int CreateUIObj(Rectangle rect, String shape, int resourceID, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
+
+        int[] tempArray = new int[14];
         tempArray[0] = rect.x;
         tempArray[1] = rect.y;
         tempArray[2] = rect.width;
@@ -151,6 +159,8 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         tempArray[9] = rotaion;
         tempArray[10] = rotationOffsetX;
         tempArray[11] = rotationOffsetY;
+
+        tempArray[13] = resourceID;
 
         switch (shape) {
             case "circle" -> tempArray[12] = 0;
@@ -167,9 +177,9 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
     }
 
-    public void EditUIObj(int UIObjID, Rectangle rect, String shape, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
+    public void EditUIObj(int UIObjID, Rectangle rect, String shape, int resourceID, int rotaion, int rotationOffsetX, int rotationOffsetY, int line_thickness, Color rgba) {
 
-        int[] tempArray = new int[13];
+        int[] tempArray = new int[14];
         tempArray[0] = rect.x;
         tempArray[1] = rect.y;
         tempArray[2] = rect.width;
@@ -182,6 +192,8 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         tempArray[9] = rotaion;
         tempArray[10] = rotationOffsetX;
         tempArray[11] = rotationOffsetY;
+
+        tempArray[13] = resourceID;
 
         switch (shape) {
             case "circle" -> tempArray[12] = 0;
@@ -204,44 +216,6 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         UIObjects.remove(UIObjID);
     }
 
-    public int AddUIDecal(String imgDir) {
-        BufferedImage image;
-        try {
-            image = ImageIO.read(new File(imgDir));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        UIDecals.add(image);
-        return UIDecals.indexOf(image);
-    }
-
-    public void EditUIDecal(int UIObjID, String imgDir) {
-        BufferedImage image;
-        try {
-            image = ImageIO.read(new File(imgDir));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        UIDecals.set(UIObjID, image);
-    }
-
-    public void DeleteUIDecal(int UIObjId) {
-        UIDecals.remove(UIObjId);
-    }
-
-    public int AddUIString(String string) {
-        UIStrings.add(string);
-        return UIStrings.indexOf(string);
-    }
-
-    public void EditUIString(int UIObjID, String string) {
-        UIStrings.set(UIObjID, string);
-    }
-
-    public void DeleteUIString(int UIObjId) {
-        UIStrings.remove(UIObjId);
-    }
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -253,6 +227,9 @@ public class GraphicsHandler extends JPanel implements ActionListener {
             // sets the thickness of the line
             Stroke LineStroke = new BasicStroke(objects.get(i)[8]);
             g2.setStroke(LineStroke);
+
+            // sets the font
+
 
             // scales to fit frame
             AffineTransform tx = new AffineTransform();
@@ -269,11 +246,13 @@ public class GraphicsHandler extends JPanel implements ActionListener {
                 case 0 ->
                         g2.drawOval(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
                 case 1 ->
-                        g2.drawImage(decals.get(i), objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3], null);
+                        g2.drawImage(decals.get(objects.get(i)[13]), objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3], null);
                 case 2 ->
                         g2.drawLine(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2] - camX, objects.get(i)[3] - camY);
-                case 3 ->
-                        g2.drawString(strings.get(i), objects.get(i)[0] - camX, objects.get(i)[1] - camY);
+                case 3 -> {
+                    g2.setFont(fonts.get(i));
+                    g2.drawString(strings.get(objects.get(i)[13]), objects.get(i)[0] - camX, objects.get(i)[1] - camY);
+                }
                 case 4 ->
                         g2.drawRect(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
                 case 5 ->
@@ -304,11 +283,13 @@ public class GraphicsHandler extends JPanel implements ActionListener {
                 case 0 ->
                         g2.drawOval(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
                 case 1 ->
-                        g2.drawImage(UIDecals.get(i), UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3], null);
+                        g2.drawImage(decals.get(UIObjects.get(i)[13]), UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3], null);
                 case 2 ->
                         g2.drawLine(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
-                case 3 ->
-                        g2.drawString(UIStrings.get(i), UIObjects.get(i)[0], UIObjects.get(i)[1]);
+                case 3 -> {
+                    g2.setFont(fonts.get(UIObjects.get(i)[13]));
+                    g2.drawString(strings.get(UIObjects.get(i)[13]), UIObjects.get(i)[0], UIObjects.get(i)[1]);
+                }
                 case 4 ->
                         g2.drawRect(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
                 case 5 ->

@@ -220,6 +220,8 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        AffineTransform originalTransform = g2.getTransform();
+
         // draws object graphics
         for (int i = 0; i < objects.size(); i++) {
             // sets the color of the object to the color to draw
@@ -228,18 +230,12 @@ public class GraphicsHandler extends JPanel implements ActionListener {
             Stroke LineStroke = new BasicStroke(objects.get(i)[8]);
             g2.setStroke(LineStroke);
 
-            // sets the font
-
-
-            // scales to fit frame
-            AffineTransform tx = new AffineTransform();
-            tx.concatenate( g2.getTransform() );
-
             // sets rotation
+            AffineTransform tx = new AffineTransform();
+            tx.concatenate(g2.getTransform());
             double objrotation = Math.toRadians(objects.get(i)[9]);
             tx.rotate(objrotation, objects.get(i)[0] - camX, objects.get(i)[1] - camY);
             tx.translate(-objects.get(i)[10] , -objects.get(i)[11]);
-
             g2.setTransform(tx);
 
             switch (objects.get(i)[12]) {
@@ -260,7 +256,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
                 case 6 ->
                         g2.fillRect(objects.get(i)[0] - camX, objects.get(i)[1] - camY, objects.get(i)[2], objects.get(i)[3]);
             }
-
+            g2.setTransform(originalTransform);
 
         }
 

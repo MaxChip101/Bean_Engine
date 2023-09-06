@@ -270,6 +270,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
             // sets rotation
             AffineTransform transform = new AffineTransform();
+            tx.concatenate(g2.getTransform());
             double objrotation = Math.toRadians(UIObjects.get(i)[9]);
             transform.rotate(objrotation, UIObjects.get(i)[0], UIObjects.get(i)[1]);
             transform.translate(-UIObjects.get(i)[10], -UIObjects.get(i)[11]);
@@ -293,6 +294,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
                 case 6 ->
                         g2.fillRect(UIObjects.get(i)[0], UIObjects.get(i)[1], UIObjects.get(i)[2], UIObjects.get(i)[3]);
             }
+            g2.setTransform(originalTransform);
         }
     }
 

@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 public class Main {
 
@@ -52,56 +50,32 @@ public class Main {
         frame.setIconImage(icon);
         start();
         graphics.Begin();
-        frame.setSize(ScreenWidth, ScreenHeight);
         frame.setResizable(FrameResizable);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    static BeanObj obj1 = new BeanObj();
+    static void start() {
+        frame.setSize(480, 360);
+        frame.setTitle("Bean Engine");
+        FrameResizable = true;
+        graphics.setBackground(new Color(0, 0, 0));
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(false);
 
-    static int obj1;
-    static Rectangle rectangle1 = new Rectangle(500, 500, 50, 50);
-
-    // BUILT-IN: calls on build
-    public static void start(){
-        frame.setTitle("Engine");
-        ScreenWidth = 1600;
-        ScreenHeight = 1000;
-        FrameResizable = false;
-        obj1 = graphics.CreateObj(rectangle1, "fillrect", 0, 0, 25, 25, 0, new Color(0, 0, 0, 255));
-        int obj2 = graphics.CreateObj(new Rectangle(600, 500, 50, 50), "fillrect", 0, 0, 25, 25, 0, new Color(255, 0, 0, 255));
-        key.registerKey(KeyEvent.VK_UP);
-        key.registerKey(KeyEvent.VK_DOWN);
-        key.registerKey(KeyEvent.VK_LEFT);
-        key.registerKey(KeyEvent.VK_RIGHT);
-        audio.AddSound("res/audio/Mario64underwater.wav");
-        audio.playSound(0);
+        // initializing object 1
+        obj1.bounds = new Rectangle(50, 50, 50, 50);
+        obj1.color = new Color(35, 255, 238, 255);
+        obj1.rotation = 0;
+        obj1.rotationOffset = new Point(0, 0);
+        obj1.lineThickness = 10;
+        obj1.shape  = "fillRect";
+        graphics.objects.add(obj1);
     }
 
-    static int rotation = 0;
-
-    // BUILT-IN: updates every frame
-    public static void update() {
-        rotation += 1;
-        graphics.EditObj(obj1, rectangle1, "fillrect", 0, rotation, 25, 25, 0, new Color(0, 0, 0, 255));
-
-        Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-        frame.setCursor(cursor);
-
-        if (key.keys.get(KeyEvent.VK_UP)) {
-            graphics.camY -= 5;
-        }
-        if (key.keys.get(KeyEvent.VK_DOWN)) {
-            graphics.camY += 5;
-        }
-        if (key.keys.get(KeyEvent.VK_LEFT)) {
-            graphics.camX -= 5;
-            audio.unpauseSound(0);
-        }
-        if (key.keys.get(KeyEvent.VK_RIGHT)) {
-            graphics.camX += 5;
-            audio.pauseSound(0);
-        }
-
+    static void update() {
+        // moving object 1 right by 1 pixel evey frame
+        obj1.bounds.x += 1;
     }
 
 }

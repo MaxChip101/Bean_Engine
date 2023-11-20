@@ -7,16 +7,15 @@ import java.util.Map;
 public class AudioHandler {
 
     private Map<Integer, Clip> soundClips;
-    private AudioFormat audioFormat;
 
     public AudioHandler() {
         soundClips = new HashMap<>();
     }
 
-    public int AddSound(String path) {
+    public int addSound(String path) {
         try {
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(path));
-            audioFormat = inputStream.getFormat();
+            AudioFormat audioFormat = inputStream.getFormat();
             DataLine.Info clipInfo = new DataLine.Info(Clip.class, audioFormat);
             Clip newClip = (Clip) AudioSystem.getLine(clipInfo);
             newClip.open(inputStream);

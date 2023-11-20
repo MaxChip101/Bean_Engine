@@ -5,7 +5,7 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
 
     Robot robot;
 
-    {
+    MouseHandler() {
         try {
             robot = new Robot();
         } catch (AWTException e) {
@@ -77,7 +77,7 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
     public void MoveCursor(Point point) {
             int xcoor = point.x;
             int ycoor = point.y;
-            robot.mouseMove(xcoor, ycoor); // Set the mouse cursor position
+            robot.mouseMove(xcoor, ycoor);
     }
 
     public void ClickMouse(int mouseButton) {

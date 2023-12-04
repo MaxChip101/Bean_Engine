@@ -62,6 +62,7 @@ public class Main {
         graphics.setBackground(new Color(0, 0, 0));
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(false);
+        graphics.currentScene = 0;
 
         // initializing object 1
         obj1.bounds = new Rectangle(50, 50, 50, 50);
@@ -70,6 +71,7 @@ public class Main {
         obj1.rotationOffset = new Point(0, 0);
         obj1.lineThickness = 10;
         obj1.shape  = "fillRect";
+        obj1.scene = 0;
         graphics.objects.add(obj1);
     }
 

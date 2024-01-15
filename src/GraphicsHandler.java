@@ -8,10 +8,12 @@ import java.util.Comparator;
 
 public class GraphicsHandler extends JPanel implements ActionListener {
 
-    public ArrayList<BeanObj> objects;
+    public static ArrayList<BeanObj> objects;
+
+    public int currentScene;
 
     public void Begin() {
-        Timer timer = new Timer(1000 / Main.FRAME_RATE, this);
+        Timer timer = new Timer(100 / Main.FRAME_RATE, this);
         timer.start();
     }
 
@@ -19,14 +21,12 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         objects = new ArrayList<>();
     }
 
-    public int currentScene;
-    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
         AffineTransform originalTransform = g2.getTransform();
-        objects.sort(Comparator.comparingInt(BeanObj::getZindex));
+        objects.sort(Comparator.comparingInt(BeanObj::getZindex).reversed());
         // draws object graphics
         for (int i = 0; i < objects.size(); i++) {
             if (currentScene == objects.get(i).scene) {
@@ -51,7 +51,9 @@ public class GraphicsHandler extends JPanel implements ActionListener {
                     case "img" -> g2.drawImage(objects.get(i).image, objects.get(i).bounds.x, objects.get(i).bounds.y, objects.get(i).bounds.width, objects.get(i).bounds.height, null);
                     case "ln" -> g2.drawLine(objects.get(i).bounds.x, objects.get(i).bounds.y, objects.get(i).bounds.width, objects.get(i).bounds.height);
                     case "str" -> {
-                        g2.setFont(objects.get(i).font);
+                        if (objects.get(i).font != null) {
+                            g2.setFont(objects.get(i).font);
+                        }
                         g2.drawString(objects.get(i).string, objects.get(i).bounds.x, objects.get(i).bounds.y);
                     }
                     case "rect" -> g2.drawRect(objects.get(i).bounds.x, objects.get(i).bounds.y, objects.get(i).bounds.width, objects.get(i).bounds.height);

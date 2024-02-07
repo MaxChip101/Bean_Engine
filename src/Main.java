@@ -1,5 +1,13 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -16,14 +24,13 @@ public class Main {
     public static String keytyped = "none";
 
     // Screen variables
-    public static int ScreenWidth;
-    public static int ScreenHeight;
     public static Boolean FrameResizable;
 
     // Frame rate
-    public static final int FRAME_RATE = 120;
+    public static final int FRAME_RATE = 60;
 
     // Mouse Variables
+
     public static boolean mouse1Down;
     public static boolean mouse1Released;
 
@@ -36,7 +43,7 @@ public class Main {
     public static int mouseX;
     public static int mouseY;
 
-    public static int scrollWheelRotation;
+    public static double scrollWheelRotation;
 
 
     // Main function
@@ -46,7 +53,9 @@ public class Main {
         frame.addKeyListener(key);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
-        Image icon = Toolkit.getDefaultToolkit().getImage("res/img/icon.jpg");
+        frame.addMouseWheelListener(mouse);
+        frame.setCursor(mouse.cursor);
+        Image icon = BeanTools.loadImage("res/img/icon.jpg");
         frame.setIconImage(icon);
         start();
         graphics.Begin();
@@ -54,30 +63,35 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    static BeanObj obj1 = new BeanObj();
+
+    static int screenWidth;
+    static int screenHeight;
+
+
+
     static void start() {
-        frame.setSize(480, 360);
-        frame.setTitle("Bean Engine");
+
+        frame.setSize(940, 620);
+        frame.setTitle("3D engine");
         FrameResizable = true;
-        graphics.setBackground(new Color(0, 0, 0));
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(false);
+        graphics.setBackground(new Color(255, 255, 255));
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //frame.setUndecorated(true);
+        screenWidth = frame.getWidth();
+        screenHeight = frame.getHeight();
+
         graphics.currentScene = 0;
 
-        // initializing object 1
-        obj1.bounds = new Rectangle(50, 50, 50, 50);
-        obj1.color = new Color(35, 255, 238, 255);
-        obj1.rotation = 0;
-        obj1.rotationOffset = new Point(0, 0);
-        obj1.lineThickness = 10;
-        obj1.shape  = "fillRect";
-        obj1.scene = 0;
-        graphics.objects.add(obj1);
+
+        // mouse instancing
+        mouse.setCursor("res/img/cursor.png", new Point(0, 0), "Bean_Cursor");
+        frame.setCursor(mouse.cursor);
+
+
     }
 
     static void update() {
-        // moving object 1 right by 1 pixel evey frame
-        obj1.bounds.x += 1;
+
     }
 
 }

@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class BeanObj {
 
@@ -11,10 +12,12 @@ public class BeanObj {
         // layer variables
         public int zindex;
 
-        //
+        // visibility variables
+        public boolean visible;
 
         // shape variables
-        public Rectangle bounds;
+        public ArrayList<Point> points;
+        public Polygon polygon = new Polygon();
         public String shape;
 
         // rotation variables
@@ -31,9 +34,9 @@ public class BeanObj {
         public int lineThickness;
 
         BeanObj() {
+            visible = true;
             scene = 0;
             zindex = 0;
-            bounds = new Rectangle(0, 0, 0, 0);
             shape = "rect";
             rotation = 0;
             rotationOffset = new Point(0, 0);
@@ -47,6 +50,16 @@ public class BeanObj {
         // Hitbox
         public Rectangle hitbox;
 
+        // Callable Functions
+
         public int getZindex() { return zindex; }
+
+        public void updatePoints() {
+            polygon.npoints = points.size();
+            for (int i = 0; i < points.size(); i++) {
+                polygon.xpoints[i] = points.get(i).x;
+                polygon.ypoints[i] = points.get(i).y;
+            }
+        }
 
 }

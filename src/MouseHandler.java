@@ -71,8 +71,9 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
         Main.mouseY = pos.y;
     }
 
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        Main.scrollWheelRotation = e.getWheelRotation();
+        Main.scrollWheelRotation = e.getPreciseWheelRotation();
     }
 
     // Callable Functions

@@ -1,9 +1,11 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class MouseHandler extends MouseAdapter implements MouseMotionListener {
 
     Robot robot;
+    Cursor cursor;
 
     MouseHandler() {
         try {
@@ -16,6 +18,7 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
     // Not used
     @Override
     public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override
@@ -73,6 +76,9 @@ public class MouseHandler extends MouseAdapter implements MouseMotionListener {
     }
 
     // Callable Functions
+    public void setCursor(String imgPath, Point hotspot, String name) {
+        cursor = Toolkit.getDefaultToolkit().createCustomCursor(BeanTools.loadImage(imgPath), hotspot, name);
+    }
 
     public void MoveCursor(Point point) {
             int xcoor = point.x;
